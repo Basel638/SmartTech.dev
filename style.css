@@ -348,3 +348,93 @@ body {
     }
 }
 
+
+.doc-list {
+    list-style: none;
+    padding: 0;
+}
+
+    .doc-list li {
+        padding: 5px 0;
+        font-size: 0.9em;
+    }
+
+    .doc-list a {
+        color: #2980b9;
+        margin-left: 10px;
+    }
+
+.message-board {
+    height: 180px;
+    overflow-y: auto;
+    border: 1px solid #eee;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.message-item {
+    margin-bottom: 5px;
+    font-size: 0.9em;
+}
+
+    .message-item span {
+        font-weight: bold;
+        color: #2c3e50;
+    }
+
+    .message-item.self {
+        text-align: right;
+        color: #2980b9;
+    }
+
+.message-input-area {
+    display: flex;
+    gap: 5px;
+}
+
+    .message-input-area input {
+        flex-grow: 1;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+
+.btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-weight: 600;
+}
+
+.btn-primary {
+    background-color: #3498db;
+    color: white;
+}
+
+    .btn-primary:hover {
+        background-color: #2980b9;
+    }
+
+.btn-secondary {
+    background-color: #7f8c8d;
+    color: white;
+}
+
+    .btn-secondary:hover {
+        background-color: #6c7a7d;
+    }
+
+.btn-success {
+    background-color: #2ecc71;
+    color: white;
+}
+
+    .btn-success:hover {
+        background-color: #27ae60;
+    }
+
