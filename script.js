@@ -1,3 +1,4 @@
+
 let projects = [];
 let selectedProjectId = null;
 let currentSender = 'self';
@@ -322,8 +323,8 @@ function renderDocumentList(project) {
 
 function simulateDownload(event, fileName) {
     event.preventDefault();
-    console.log([Prototype Action] Simulating download for: ${ fileName });
-    alert([PROTOTYPE] Download initiated for: ${ fileName } \n\n(In a real application, the file would download from the server, using the link: ${ event.currentTarget.href }));
+    console.log(`[Prototype Action] Simulating download for: ${fileName}`);
+    alert(`[PROTOTYPE] Download initiated for: ${fileName}\n\n(In a real application, the file would download from the server, using the link: ${event.currentTarget.href})`);
     return false;
 }
 
@@ -335,7 +336,7 @@ function openUploadFileModal() {
     }
     const fileNameInput = document.getElementById('upload-file-name');
     const fileUrlInput = document.getElementById('upload-file-url');
-    fileUrlInput.value = https://smarttech-solutions.com/uploads/document_${Date.now()}.pdf;
+    fileUrlInput.value = `https://smarttech-solutions.com/uploads/document_${Date.now()}.pdf`;
 
     document.getElementById('upload-modal').style.display = 'block';
     fileNameInput.value = '';
@@ -367,7 +368,7 @@ function uploadNewFile(event) {
         const newDoc = {
             id: Date.now(),
             name: fileName,
-            url: fileUrl || https://smarttech-solutions.com/uploads/${fileName.replace(/[^a-zA-Z0-9.]/g, '_')} 
+            url: fileUrl || `https://smarttech-solutions.com/uploads/${fileName.replace(/[^a-zA-Z0-9.]/g, '_')}`
         };
 
         if (!project.documents) {
@@ -377,7 +378,7 @@ function uploadNewFile(event) {
         saveData();
         renderDocumentList(project);
 
-        alert([SIMULATED SUCCESS] File "${newDoc.name}" has been uploaded to the "${project.title}" project.);
+        alert(`[SIMULATED SUCCESS] File "${newDoc.name}" has been uploaded to the "${project.title}" project.`);
 
         closeUploadFileModal();
     }
