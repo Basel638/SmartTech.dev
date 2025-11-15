@@ -9,9 +9,86 @@
 </head>
 <body>
 
-   
     
-   
+ <div class="app-container">
+     
+     <aside class="sidebar">
+         <div class="logo">
+             <i class="fas fa-desktop-code"></i> SmartTech PMS
+         </div>
+         
+         <h3><i class="fas fa-list-check"></i> Active Projects</h3>
+         <ul id="project-list" class="nav-list">
+             </ul>
+
+         <button class="btn btn-primary btn-add" onclick="openProjectModal()">
+             <i class="fas fa-plus"></i> Add New Project
+         </button>
+     </aside>
+
+     <main class="main-content">
+         <header class="top-bar">
+             <div id="current-project-header">
+                 <h2>Select a Project to View Details</h2>
+                 <p class="description"></p>
+             </div>
+             <div class="user-profile">
+                 <span class="user-name">Welcome, Project Lead!</span>
+                 <i class="fas fa-user-circle"></i>
+             </div>
+         </header>
+
+         <div class="content-grid">
+             
+             <section class="card tasks-card">
+                 <div class="card-header">
+                     <h3><i class="fas fa-tasks"></i> Task Tracker</h3>
+                     <div id="project-progress" class="progress-bar-container">
+                         </div>
+                 </div>
+                 
+                 <form id="task-form" class="task-form hidden">
+                     <input type="text" id="task-name" placeholder="Enter task description..." required>
+                     <select id="task-priority" required>
+                         <option value="High">High</option>
+                         <option value="Medium">Medium</option>
+                         <option value="Low">Low</option>
+                     </select>
+                     <button type="submit" class="btn btn-success"><i class="fas fa-plus"></i> Add</button>
+                 </form>
+
+                 <ul id="task-list" class="task-list">
+                     </ul>
+             </section>
+
+             <section class="card collab-card">
+                 <h3><i class="fas fa-comments"></i> Collaboration & Resources</h3>
+                 
+                 <div class="document-section">
+                     <h4><i class="fas fa-folder-open"></i> Shared Documents</h4>
+                     <button class="btn btn-secondary btn-upload" onclick="openUploadFileModal()">
+                         <i class="fas fa-upload"></i> Upload File
+                     </button>
+                     <ul id="document-list" class="doc-list">
+                         </ul>
+                 </div>
+
+                 <div class="message-section">
+                     <h4><i class="fas fa-message"></i> Team Chat</h4>
+                     <div id="message-board" class="message-board">
+                         <div class="message-item sender"><span>Team Lead:</span> Please review the SRS document today.</div>
+                         <div class="message-item self"><span>You:</span> Uploaded the latest budget spreadsheet to shared docs.</div>
+                     </div>
+                     <div class="message-input-area">
+                         <input type="text" id="new-message" placeholder="Type a message...">
+                         <button onclick="sendMessage()" class="btn btn-icon"><i class="fas fa-paper-plane"></i></button>
+                     </div>
+                 </div>
+             </section>
+         </div>
+     </main>
+ </div>
+
     <script src="script.js"></script>
 </body>
 </html>
