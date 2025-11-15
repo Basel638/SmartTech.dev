@@ -1,12 +1,11 @@
-
 let projects = [];
-let selectedProjectId = null; 
-let currentSender = 'self'; 
+let selectedProjectId = null;
+let currentSender = 'self';
 
 const defaultProjects = [
-    { 
-        id: 1, 
-        title: "Platform Requirements (SDLC Phase 1)", 
+    {
+        id: 1,
+        title: "Platform Requirements (SDLC Phase 1)",
         description: "Stakeholder interviews, drafting the Software Requirements Specification (SRS), and finalizing technical architecture.",
         tasks: [
             { id: 101, name: "Interview department heads (Scope confirmation)", priority: "High", completed: true },
@@ -18,9 +17,9 @@ const defaultProjects = [
             { id: 2, name: "Stakeholder_Meeting_Notes.docx", url: "https://example.com/notes.docx" }
         ]
     },
-    { 
-        id: 2, 
-        title: "Core System Implementation (SDLC Phase 3)", 
+    {
+        id: 2,
+        title: "Core System Implementation (SDLC Phase 3)",
         description: "Development of the Node.js backend API and the primary front-end components.",
         tasks: [
             { id: 201, name: "Set up Node/Express server environment", priority: "High", completed: true },
@@ -51,18 +50,18 @@ function saveData() {
 
 function renderProjectList() {
     const projectListElement = document.getElementById('project-list');
-    projectListElement.innerHTML = ''; 
+    projectListElement.innerHTML = '';
 
     projects.forEach(project => {
         const listItem = document.createElement('li');
         listItem.textContent = project.title;
         listItem.dataset.id = project.id;
         listItem.onclick = () => selectProject(project.id);
-        
+
         if (project.id === selectedProjectId) {
             listItem.classList.add('active');
         }
-        
+
         projectListElement.appendChild(listItem);
     });
 }
@@ -79,17 +78,17 @@ function selectProject(projectId) {
 
         renderProjectList();
         renderTaskList(project);
-        renderDocumentList(project); 
+        renderDocumentList(project);
     }
 }
 
 
 function calculateProgress(project) {
     if (!project || project.tasks.length === 0) return 0;
-    
+
     const totalTasks = project.tasks.length;
     const completedTasks = project.tasks.filter(t => t.completed).length;
-    
+
     return Math.round((completedTasks / totalTasks) * 100);
 }
 
@@ -97,27 +96,27 @@ function renderProjectProgress(project) {
     const headerContainer = document.getElementById('project-progress').parentNode;
     const progressContainer = document.getElementById('project-progress');
     const percentage = calculateProgress(project);
-    
+
     const existingText = headerContainer.querySelector('.progress-text');
     if (existingText) existingText.remove();
-    
+
     progressContainer.innerHTML = `
         <div class="progress-bar" style="width: ${percentage}%;"></div>
     `;
-    
+
     const progressText = document.createElement('span');
     progressText.classList.add('progress-text');
     progressText.textContent = `${percentage}% Complete`;
     progressText.style.fontSize = '0.9em';
     progressText.style.marginLeft = '10px';
     progressText.style.color = '#2c3e50';
-    
+
     headerContainer.insertBefore(progressText, progressContainer.nextSibling);
 }
 
 function renderTaskList(project) {
     const taskListElement = document.getElementById('task-list');
-    taskListElement.innerHTML = ''; 
+    taskListElement.innerHTML = '';
 
     if (!project) {
         taskListElement.innerHTML = '<p style="text-align:center; color:#6c757d;">Please select a project from the sidebar.</p>';
@@ -126,7 +125,7 @@ function renderTaskList(project) {
 
     project.tasks.sort((a, b) => {
         if (a.completed !== b.completed) {
-            return a.completed ? 1 : -1; 
+            return a.completed ? 1 : -1;
         }
         const priorityOrder = { 'High': 3, 'Medium': 2, 'Low': 1 };
         return priorityOrder[b.priority] - priorityOrder[a.priority];
@@ -139,11 +138,11 @@ function renderTaskList(project) {
 
         const taskName = document.createElement('span');
         taskName.textContent = task.name;
-        
+
         const priorityTag = document.createElement('span');
         priorityTag.classList.add('priority-tag', task.priority);
         priorityTag.textContent = task.priority;
-        
+
         const completeBtn = document.createElement('button');
         completeBtn.classList.add('complete-btn');
         completeBtn.innerHTML = task.completed ? '<i class="far fa-undo"></i>' : '<i class="far fa-circle-check"></i>';
@@ -155,7 +154,7 @@ function renderTaskList(project) {
         listItem.appendChild(completeBtn);
         taskListElement.appendChild(listItem);
     });
-    
+
     renderProjectProgress(project);
 }
 
@@ -245,3 +244,141 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('current-project-header').innerHTML = '<h2>Welcome!</h2><p class="description">Use the sidebar to add or select a project.</p>';
     }
 });
+
+function addTask(event) {
+    event.preventDefault();
+
+    const taskNameInput = document.getElementById('task-name');
+    const taskPriorityInput = document.getElementById('task-priority');
+
+    const project = projects.find(p => p.id === selectedProjectId);
+
+    if (project && taskNameInput.value.trim() !== "") {
+        const newTask = {
+            id: Date.now(),
+            name: taskNameInput.value.trim(),
+            priority: taskPriorityInput.value,
+            completed: false
+        };
+
+        project.tasks.push(newTask);
+        saveData();
+        renderTaskList(project);
+
+        taskNameInput.value = '';
+    }
+}
+
+function toggleTaskCompletion(projectId, taskId) {
+    const project = projects.find(p => p.id === projectId);
+    if (project) {
+        const task = project.tasks.find(t => t.id === taskId);
+        if (task) {
+            task.completed = !task.completed;
+            saveData();
+            renderTaskList(project);
+        }
+    }
+}
+
+
+function getFileIconClass(fileName) {
+    let iconClass = 'fas fa-file';
+    if (fileName.endsWith('.pdf')) iconClass = 'fas fa-file-pdf';
+    else if (fileName.endsWith('.docx') || fileName.endsWith('.doc')) iconClass = 'fas fa-file-word';
+    else if (fileName.endsWith('.xlsx') || fileName.endsWith('.xls')) iconClass = 'fas fa-file-excel';
+    else if (fileName.endsWith('.json') || fileName.endsWith('.txt')) iconClass = 'fas fa-file-code';
+    else if (fileName.endsWith('.jpg') || fileName.endsWith('.png') || fileName.endsWith('.gif')) iconClass = 'fas fa-file-image';
+    return iconClass;
+}
+
+function renderDocumentList(project) {
+    const docListElement = document.getElementById('document-list');
+    docListElement.innerHTML = '';
+
+    if (!project || !project.documents) {
+        docListElement.innerHTML = '<li><i class="fas fa-info-circle"></i> Error loading documents.</li>';
+        return;
+    }
+
+    if (project.documents.length === 0) {
+        docListElement.innerHTML = '<li><i class="fas fa-info-circle"></i> No shared documents for this project.</li>';
+        return;
+    }
+
+    project.documents.forEach(doc => {
+        const listItem = document.createElement('li');
+        const iconClass = getFileIconClass(doc.name);
+
+        listItem.innerHTML = `
+            <i class="${iconClass}"></i> ${doc.name} 
+            <a href="${doc.url}" target="_blank" onclick="return simulateDownload(event, '${doc.name}')">
+                <i class="fas fa-download"></i>
+            </a>
+        `;
+        docListElement.appendChild(listItem);
+    });
+}
+
+function simulateDownload(event, fileName) {
+    event.preventDefault();
+    console.log([Prototype Action] Simulating download for: ${ fileName });
+    alert([PROTOTYPE] Download initiated for: ${ fileName } \n\n(In a real application, the file would download from the server, using the link: ${ event.currentTarget.href }));
+    return false;
+}
+
+
+function openUploadFileModal() {
+    if (!selectedProjectId) {
+        alert("Please select a project first before uploading documents.");
+        return;
+    }
+    const fileNameInput = document.getElementById('upload-file-name');
+    const fileUrlInput = document.getElementById('upload-file-url');
+    fileUrlInput.value = https://smarttech-solutions.com/uploads/document_${Date.now()}.pdf;
+
+    document.getElementById('upload-modal').style.display = 'block';
+    fileNameInput.value = '';
+    fileNameInput.focus();
+}
+
+function closeUploadFileModal() {
+    document.getElementById('upload-modal').style.display = 'none';
+    document.getElementById('upload-file-form').reset();
+}
+
+function uploadNewFile(event) {
+    event.preventDefault();
+
+    const fileNameInput = document.getElementById('upload-file-name');
+    const fileUrlInput = document.getElementById('upload-file-url');
+
+    const fileName = fileNameInput.value.trim();
+    const fileUrl = fileUrlInput.value.trim();
+
+    if (!fileName) {
+        alert("Please enter a file name (e.g., Report.pdf).");
+        return;
+    }
+
+    const project = projects.find(p => p.id === selectedProjectId);
+
+    if (project) {
+        const newDoc = {
+            id: Date.now(),
+            name: fileName,
+            url: fileUrl || https://smarttech-solutions.com/uploads/${fileName.replace(/[^a-zA-Z0-9.]/g, '_')} 
+        };
+
+        if (!project.documents) {
+            project.documents = [];
+        }
+        project.documents.push(newDoc);
+        saveData();
+        renderDocumentList(project);
+
+        alert([SIMULATED SUCCESS] File "${newDoc.name}" has been uploaded to the "${project.title}" project.);
+
+        closeUploadFileModal();
+    }
+}
