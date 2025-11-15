@@ -89,7 +89,7 @@
         </main>
     </div>
 
-    
+
     <div id="upload-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeUploadFileModal()">&times;</span>
@@ -105,6 +105,26 @@
             </form>
         </div>
     </div>
+
+
+
+    <div id="project-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeProjectModal()">&times;</span>
+            <h3>Create New Project</h3>
+            <form id="new-project-form">
+                <label for="project-title">Project Title:</label>
+                <input type="text" id="project-title" required>
+
+                <label for="project-description">Scope/Description:</label>
+                <textarea id="project-description" rows="3" required></textarea>
+
+                <button type="submit" class="btn btn-primary">Save Project</button>
+            </form>
+        </div>
+    </div>
+
+
 
 
     <script src="script.js"></script>
